@@ -1,5 +1,8 @@
-const RegisterUser = async (req, res) => {};
+const create = async (req, res) => {
+  try {
+  } catch (error) {}
+};
 
 module.exports = {
-  RegisterUser,
+  create,
 };

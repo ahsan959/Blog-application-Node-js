@@ -12,7 +12,7 @@ const StartServer = async () => {
   // create Express Object
   const app = express();
 
-  // app.use("/api", ApiRouter);
+  app.use("/api", ApiRoutes);
   ConnectDatabase();
 
   app.use(body_parser.json());
