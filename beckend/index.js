@@ -1,27 +1,25 @@
 const express = require("express");
-const { port } = require("./config/serverConfig");
-const body_parser = require("body-parser");
-const { urlencoded } = require("body-parser");
-const ConnectDatabase = require("./config/db");
-const ApiRouter = require("./config/serverConfig");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/auth_routes");
+const cors = require("cors");
 
-// const db = require("./models/index");
-const ApiRoutes = require("./Routes/index");
+const app = express();
+const port = 3000;
 
-const StartServer = async () => {
-  // create Express Object
-  const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-  app.use("/api", ApiRoutes);
-  ConnectDatabase();
+mongoose.connect(
+  "mongodb://Ahsan:4iRgfJwCvCoEPekn@ac-ddorca6-shard-00-00.nrzyvdu.mongodb.net:27017,ac-ddorca6-shard-00-01.nrzyvdu.mongodb.net:27017,ac-ddorca6-shard-00-02.nrzyvdu.mongodb.net:27017/?ssl=true&replicaSet=atlas-au53ul-shard-0&authSource=admin&retryWrites=true",
+  { useNewUrlParser: true }
+);
 
-  app.use(body_parser.json());
-  app.use(body_parser.urlencoded({ extended: true }));
+app.use("/api", userRoutes);
 
-  // start the server
-  app.listen(port, () => {
-    console.log(`Server started on Port:${port}`);
-  });
-};
+app.use("/auth", authRoutes);
 
-StartServer();
+app.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
+});
